@@ -361,6 +361,12 @@ void DesktopCalendarWidget::rebuildEventList() {
   if (m_eventsScroll == nullptr) {
     return;
   }
+  std::string_view eventDateFormat = kEventDateFormat;
+  std::string_view eventTimeFormat = kEventTimeFormat;
+  if (m_config != nullptr) {
+    eventDateFormat = m_config->config().controlCenter.calendarTab.eventDateFormat;
+    eventTimeFormat = m_config->config().controlCenter.calendarTab.eventTimeFormat;
+  }
   calendar_view::rebuildEventList({
       .scroll = *m_eventsScroll,
       .reserveScrollbarGutter = true,
@@ -368,8 +374,8 @@ void DesktopCalendarWidget::rebuildEventList() {
       .snapshot = m_calendar != nullptr ? &m_calendar->snapshot() : nullptr,
       .selected = {.year = m_selectedYear, .month = m_selectedMonth, .day = m_selectedDay},
       .scale = contentScale(),
-      .dateFormat = kEventDateFormat,
-      .timeFormat = kEventTimeFormat,
+      .dateFormat = eventDateFormat,
+      .timeFormat = eventTimeFormat,
       .fontFamily = m_fontFamily,
       .state = &m_eventListState,
       .requestRedraw = [this]() { requestRedraw(); },
