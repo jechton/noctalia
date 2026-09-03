@@ -617,7 +617,9 @@ void CalendarService::rebuildSnapshot() {
     it = stillConfigured ? std::next(it) : m_discoveredVdirPathsByAccount.erase(it);
   }
 
-  m_snapshot.events = calendar::mergeCalendarEvents(m_eventsByAccount, m_activeConfig.dedupeEvents);
+  m_snapshot.events = calendar::mergeCalendarEvents(
+      m_eventsByAccount, m_activeConfig.dedupeEvents, m_activeConfig.dedupeIgnorePatterns
+  );
   m_snapshot.valid = true;
 }
 
