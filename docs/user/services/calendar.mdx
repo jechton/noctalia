@@ -34,6 +34,7 @@ Existing accounts can be edited from **Settings → Services → Calendar**. Goo
 [calendar]
 enabled             = true
 dedupe_events       = false   # merge an event that appears in more than one calendar into a single entry
+dedupe_ignore_patterns = []   # regexes stripped from a title before events are compared
 refresh_minutes     = 15
 event_date_format   = "%A %e %B"
 event_time_format   = "%H:%M"
@@ -82,7 +83,9 @@ color = "#FF0000"
 
 ## Merging duplicate events
 
-`dedupe_events` (also **Settings → Services → Calendar → Merge Duplicate Events**) is off by default. When enabled, an event that shows up in more than one of your calendars, whether those calendars sit in a single account or in several, is shown once instead of once per calendar. Two events are treated as the same occurrence when their title, start, end, and all-day flag match; the copy kept is the one carrying the most detail (color, link, location).
+`dedupe_events` (also **Settings → Services → Calendar → Merge Duplicate Events**) is off by default. When enabled, an event that shows up in more than one of your calendars, whether those calendars sit in a single account or in several, is shown once instead of once per calendar. Two events are treated as the same occurrence when their start, end, all-day flag, and title match. The copy kept is the one that shows the most: more filled-in fields (color, link, location), then the longer title.
+
+`dedupe_ignore_patterns` is a list of ECMAScript regular expressions (matched case-insensitively). Every match is removed from a title before the titles are compared, so two calendars that word the same event slightly differently still merge, and the more detailed title is the one displayed. To ignore a trailing parenthetical, for example, use `['\s*\(.*\)$']` (TOML single quotes keep the backslashes literal). An invalid pattern is skipped.
 
 ## Credential storage
 

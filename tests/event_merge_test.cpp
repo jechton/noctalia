@@ -100,5 +100,36 @@ int main() {
     ok = expect(merged.size() == 2, "all-day and timed occurrences were merged") && ok;
   }
 
+  // Titles that differ only by an ignore-pattern match merge, and the longer title is displayed.
+  {
+    std::map<std::string, std::vector<CalendarEvent>> byAccount;
+    byAccount["work"] = {event("Team", "Sprint", 60, 90)};
+    byAccount["personal"] = {event("Shared", "Sprint (extended)", 60, 90)};
+    const auto merged = calendar::mergeCalendarEvents(byAccount, true, {"\\s*\\(.*\\)$"});
+    ok = expect(
+             merged.size() == 1 && merged.front().title == "Sprint (extended)",
+             "ignore pattern did not merge to the detailed title"
+         )
+        && ok;
+  }
+
+  // Without the pattern the same two titles stay separate.
+  {
+    std::map<std::string, std::vector<CalendarEvent>> byAccount;
+    byAccount["work"] = {event("Team", "Sprint", 60, 90)};
+    byAccount["personal"] = {event("Shared", "Sprint (extended)", 60, 90)};
+    const auto merged = calendar::mergeCalendarEvents(byAccount, true);
+    ok = expect(merged.size() == 2, "differing titles merged without an ignore pattern") && ok;
+  }
+
+  // An invalid pattern is skipped rather than throwing.
+  {
+    std::map<std::string, std::vector<CalendarEvent>> byAccount;
+    byAccount["work"] = {event("Team", "Standup", 60, 90)};
+    byAccount["personal"] = {event("Shared", "Standup", 60, 90)};
+    const auto merged = calendar::mergeCalendarEvents(byAccount, true, {"("});
+    ok = expect(merged.size() == 1, "invalid pattern broke an otherwise exact match") && ok;
+  }
+
   return ok ? 0 : 1;
 }
