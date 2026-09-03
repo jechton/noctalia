@@ -7,7 +7,7 @@ sidebar:
 
 The calendar service syncs events from your online accounts or local calendar directories (such as vdirsyncer) and shows them in the control center calendar. CalDAV providers (Nextcloud, iCloud, Fastmail, Radicale, mailbox.org, …) are talked to directly; Google Calendar is connected through a browser authorization flow; local vdir directories are watched with inotify. Events are read-only.
 
-`[calendar]` covers account sync and shared event date and time formats. Calendar-tab-only presentation options, such as the events card and ISO week number column, live under [`[control_center.calendar]`](/noctalia/control-center/#calendar).
+`[calendar]` covers account sync, optional duplicate merging, and shared event date and time formats. Calendar-tab-only presentation options, such as the events card and ISO week number column, live under [`[control_center.calendar]`](/noctalia/control-center/#calendar).
 
 ## Settings setup
 
@@ -33,6 +33,7 @@ Existing accounts can be edited from **Settings → Services → Calendar**. Goo
 ```toml
 [calendar]
 enabled             = true
+dedupe_events       = false   # merge an event that appears in more than one calendar into a single entry
 refresh_minutes     = 15
 event_date_format   = "%A %e %B"
 event_time_format   = "%H:%M"
@@ -78,6 +79,10 @@ color = "#FF0000"
 ```
 
 **Credentials are never stored in your config.** The `password_file` setting contains only a path; the file contents hold the CalDAV password.
+
+## Merging duplicate events
+
+`dedupe_events` (also **Settings → Services → Calendar → Merge Duplicate Events**) is off by default. When enabled, an event that shows up in more than one of your calendars, whether those calendars sit in a single account or in several, is shown once instead of once per calendar. Two events are treated as the same occurrence when their title, start, end, and all-day flag match; the copy kept is the one carrying the most detail (color, link, location).
 
 ## Credential storage
 

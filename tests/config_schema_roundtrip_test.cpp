@@ -419,6 +419,7 @@ location = "https://example.invalid/bad"
     c.controlCenter.calendarTab.showWeekNumbers = true;
     c.controlCenter.shortcuts = {{"wifi"}, {"bluetooth"}};
     c.calendar.enabled = true;
+    c.calendar.dedupeEvents = true;
     c.calendar.refreshMinutes = 30;
     c.calendar.eventDateFormat = "%Y-%m-%d";
     c.calendar.eventTimeFormat = "%I:%M %p";
