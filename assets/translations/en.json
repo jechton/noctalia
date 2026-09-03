@@ -2732,6 +2732,10 @@
           "description": "Time of day for a single notification listing all-day events. Leave empty to disable.",
           "label": "All-Day Digest Time"
         },
+        "calendar-dedupe-events": {
+          "description": "Collapse an event that appears in more than one of your calendars into a single entry",
+          "label": "Merge Duplicate Events"
+        },
         "calendar-edit": {
           "button": "Edit",
           "button-reconnect": "Reconnect",

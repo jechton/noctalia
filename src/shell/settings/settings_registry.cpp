@@ -2756,6 +2756,15 @@ namespace settings {
       e.visibleWhen = calendarOn;
       entries.push_back(std::move(e));
     }
+    {
+      auto e = makeEntry(
+          SettingsSection::Calendar, "general", tr("settings.schema.services.calendar-dedupe-events.label"),
+          tr("settings.schema.services.calendar-dedupe-events.description"), {"calendar", "dedupe_events"},
+          ToggleSetting{cfg.calendar.dedupeEvents}, "calendar events duplicate merge"
+      );
+      e.visibleWhen = calendarOn;
+      entries.push_back(std::move(e));
+    }
     // Week numbers are a grid decoration, so they stay available when event syncing is off.
     entries.push_back(makeEntry(
         SettingsSection::Calendar, "general", tr("settings.schema.services.calendar-week-numbers.label"),
