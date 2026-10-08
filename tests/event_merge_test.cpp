@@ -105,7 +105,7 @@ int main() {
     std::map<std::string, std::vector<CalendarEvent>> byAccount;
     byAccount["work"] = {event("Team", "Sprint", 60, 90)};
     byAccount["personal"] = {event("Shared", "Sprint (extended)", 60, 90)};
-    const auto merged = calendar::mergeCalendarEvents(byAccount, true, {"\\s*\\(.*\\)$"});
+    const auto merged = calendar::mergeCalendarEvents(byAccount, true, {R"(\s*\(.*\)$)"});
     ok = expect(
              merged.size() == 1 && merged.front().title == "Sprint (extended)",
              "ignore pattern did not merge to the detailed title"
