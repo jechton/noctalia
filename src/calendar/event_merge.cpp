@@ -69,9 +69,10 @@ namespace calendar {
       for (auto& event : merged) {
         keyed.emplace_back(dedupeKeyTitle(event.title, ignore), std::move(event));
       }
+      // The id is the last key so equally rich copies keep the same representative across refreshes.
       std::ranges::sort(keyed, [](const auto& a, const auto& b) {
-        return std::tie(a.second.start, a.second.end, a.second.allDay, a.first)
-            < std::tie(b.second.start, b.second.end, b.second.allDay, b.first);
+        return std::tie(a.second.start, a.second.end, a.second.allDay, a.first, a.second.id)
+            < std::tie(b.second.start, b.second.end, b.second.allDay, b.first, b.second.id);
       });
 
       std::vector<CalendarEvent> deduped;
